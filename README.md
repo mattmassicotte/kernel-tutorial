@@ -22,6 +22,7 @@ Everything is broken up into a series of steps, which you can find under [tutori
 
 1. [Basic Bootloader](tutorial-parts/1-grub.md)
 2. [Basic 32-bit Kernel](tutorial-parts/2-basic-kernel.md)
+3. [Making a full ISO](tutorial-parts/3-iso-kernel.md)
 
 # Contributing
 
