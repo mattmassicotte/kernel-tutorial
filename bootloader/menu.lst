@@ -1,0 +1,10 @@
+# default to booting the first entry
+default 0
+
+# boot immediately (present no UI)
+timeout 0
+
+# an OS entry
+title My Kernel
+  kernel /boot/kernel.bin some options
+  module /boot/data_file
