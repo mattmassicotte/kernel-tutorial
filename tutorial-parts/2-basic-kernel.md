@@ -28,8 +28,14 @@ The second part of our multiboot support is the initial [entry point](multiboot_
 
 # Building our assembly
 
-    nasm -felf32 32-bit-kernel/multiboot_header.asm -o multiboot_header.o
-    nasm -felf32 32-bit-kernel/multiboot_entry.asm -o multiboot_entry.o
+    mkdir build
+
+    nasm -felf32 32-bit-kernel/multiboot_header.asm -o build/multiboot_header.o
+    nasm -felf32 32-bit-kernel/multiboot_entry.asm -o build/multiboot_entry.o
+
+Or, via rake:
+
+  rake multiboot:compile
 
 With these pieces, we have enough to be multiboot-aware, and to setup an environment suitable for running C code.
 
@@ -41,7 +47,9 @@ To do that, we're going to use the video card's memory-mapped text mode to print
 
 We'll build this code using clang as a cross-compiler, which is easy:
 
-    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/kernel.c -o kernel.o
+    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/kernel.c -o build/basic-kernel.o
+
+    (rake kernel:basic:compile)
 
 The one bit that might look unfamiliar is the 'freestanding' flag. It tells the compiler that the programming isn't running in a typical libc-enabled environment. You can read a good explanation about it on [stack overflow](http://stackoverflow.com/questions/17692428/what-is-ffreestanding-option-in-gcc).
 
@@ -57,11 +65,13 @@ This linker script is mostly taken from the [Bare Bones](http://wiki.osdev.org/B
 
 # Actually doing the linking
 
-    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o kernel.bin multiboot_header.o multiboot_entry.o kernel.o
+    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o build/basic-kernel.bin build/multiboot_header.o build/multiboot_entry.o build/basic-kernel.o
+
+    (rake kernel:basic:build)
 
 This produces a 32-bit ELF executable, and will be loadable by QEMU's multiboot implementation. You can verify you've built the right thing with the 'file' command
 
-    file kernel.bin
+    file build/basic-kernel.bin
 
 You should see something about this being an ELF 32-bit executable.
 
@@ -69,7 +79,7 @@ You should see something about this being an ELF 32-bit executable.
 
 Running this with QEMU is a snap.
 
-    qemu-system-i386 -kernel kernel.bin
+    qemu-system-i386 -kernel build/basic-kernel.bin
 
 It doesn't do much, but it does confirm that we're actually seeing our own code running on the machine.
 
