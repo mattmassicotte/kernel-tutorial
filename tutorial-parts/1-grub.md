@@ -17,14 +17,20 @@ This is interesting just to test out QEMU and GRUB. This can be handy for using 
 
 Here's how you build a basic bootable floppy. Note that we need to make sure to set the block size (bs) to 512 bytes. For stage one, we're telling DD to copy only 1 block worth of data. In this case, stage1 is exactly 512 bytes. I believe this is a requirement of the BIOS floppy boot system. stage2 is positioned immediately after (seek'ing 1 block in).
 
-    dd if=bootloader/grub-0.97-binaries/stage1 of=grub-floppy.img bs=512 count=1
-    dd if=bootloader/grub-0.97-binaries/stage2 of=grub-floppy.img bs=512 seek=1
+    mkdir build
 
-    qemu-system-x86_64 -fda grub-floppy.img
+    dd if=bootloader/grub-0.97-binaries/stage1 of=build/grub-floppy.img bs=512 count=1
+    dd if=bootloader/grub-0.97-binaries/stage2 of=build/grub-floppy.img bs=512 seek=1
+
+    qemu-system-x86_64 -fda build/grub-floppy.img
 
 For reasons I don't yet fully understand, QEMU complains about having to auto-detect the raw floppy format. I didn't bother looking into this too deeply, but I would love an explanation if you happen to know. I was able to silence this warning with the following:
 
-    qemu-system-x86_64 -drive file=grub-floppy.img,index=0,if=floppy,format=raw
+    qemu-system-x86_64 -drive file=build/grub-floppy.img,index=0,if=floppy,format=raw
+
+I've automated these steps using rake. To build the floppy image quickly, do this:
+
+    rake grub:floppy
 
 # Quick aside about QEMU's monitor
 
@@ -34,30 +40,34 @@ QEMU has a monitor interface that gives you a ton of tools for control and intro
 
 Ok, back to business. Now, we're going to try to make a bootable ISO. This is really useful, because it makes it possible to deliver multiple independent files to the system. It all starts by creating a root directory, where we'll lay down the bits that ultimately become the ISO9660 file system.
 
-    mkdir -p isofiles/boot/grub
+    mkdir -p build/isofiles/boot/grub
 
 Next, copy in the two GRUB bootloader stages we need. I found it fairly confusing that this is called a "1.5 " stage. It turns out this is just really bad naming, and stage1 is not required here.
 
-    cp bootloader/grub-0.97-binaries/iso9660_stage1_5 isofiles/boot/grub/
-    cp bootloader/grub-0.97-binaries/stage2 isofiles/boot/grub/
+    cp bootloader/grub-0.97-binaries/iso9660_stage1_5 build/isofiles/boot/grub/
+    cp bootloader/grub-0.97-binaries/stage2 build/isofiles/boot/grub/
 
 Next, we have to create a bootable ISO. This is a fairly esoteric thing, and was the most complex part of this process by far. We need an ISO9660 filesystem. We need the interestingly-named "Rock Ridge" extensions to support grub's lowercase filenames. And, then we need equally interestinly-named El Torito extension to support bootable CD-ROMs. xorriso can create the image we need, but it is one tough tool to use.
 
 First try: make xorriso emulate a more user-friendly iso-creation tool, like mkisofs. I was able to find a bunch of instructions on how to use mkisofs to create a bootable GRUB image.
 
-    xorriso -as mkisofs -R -b boot/grub/iso9660_stage1_5 -no-emul-boot -boot-load-size 4 -boot-info-table -o grub.iso isofiles
+    xorriso -as mkisofs -R -b boot/grub/iso9660_stage1_5 -no-emul-boot -boot-load-size 4 -boot-info-table -o build/grub.iso build/isofiles
 
 Second try: use native commands, specifying all of the options required for a successful GRUB boot. This was really annoying to get right, partially because of the weirdness of xorriso's command syntax, and partially because of the weirdness of bootloading in general.
 
-    xorriso -outdev grub.iso -blank as_needed -map isofiles / -boot_image any bin_path=/boot/grub/iso9660_stage1_5 -boot_image any emul_type=no_emulation -boot_image any boot_info_table=on -boot_image any partition_table=on -boot_image any load_size=2048 -boot_image any cat_path=/boot/boot.cat -boot_image any platform_id=00 -boot_image any id_string=grubiso -boot_image any sel_crit=00
+    xorriso -outdev build/grub.iso -blank as_needed -map build/isofiles / -boot_image any bin_path=/boot/grub/iso9660_stage1_5 -boot_image any emul_type=no_emulation -boot_image any boot_info_table=on -boot_image any partition_table=on -boot_image any load_size=2048 -boot_image any cat_path=/boot/boot.cat -boot_image any platform_id=00 -boot_image any id_string=grubiso -boot_image any sel_crit=00
 
 Third try: allow xorriso to do some of the heavy-lifting, by telling it we are trying to make a GRUB boot image. I guess this is common enough that they've built this into the tool itself. Handy.
 
-    xorriso -outdev grub.iso -blank as_needed -map isofiles / -boot_image grub bin_path=/boot/grub/iso9660_stage1_5
+    xorriso -outdev build/grub.iso -blank as_needed -map build/isofiles / -boot_image grub bin_path=/boot/grub/iso9660_stage1_5
 
 This one I like best, because it's fairly succinct, but also uses the native xorriso commands. Now, let's give this a whirl.
 
-    qemu-system-x86_64 -boot d -cdrom grub.iso
+    qemu-system-x86_64 -boot d -cdrom build/grub.iso
+
+You can build the ISO with rake as well. Check it:
+
+    rake grub:iso
 
 # Congrats!
 
