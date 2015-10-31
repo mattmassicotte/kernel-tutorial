@@ -4,7 +4,7 @@ I really enjoy learning about and understanding lower-level computer systems. Wh
 
 This series isn't even close to as thorough as what you'll find over at OSDev. There is tons of theory and lots of details that aren't covered. Typically, I've found those bits to the easiest to learn on your own. This is geared towards getting something working, with OS X as your development environment. If you're a linux user, I think you'll be able to adapt most of these instructions to your system fairly easily.
 
-# Tooling
+## Tooling
 
 While each tutorial part will include installation steps, here's a list of everything needed for all steps in one place. First and foremost, install Xcode to get it's suite of command line tools.
 
@@ -18,7 +18,7 @@ We're going to be building an ELF executable, but OS X uses Mach-O. Clang is a r
 
 For build automation, my personal preference is [Rake](https://github.com/ruby/rake). It has been pre-installed on OS X for ages, and is far more sane than Make. That said, please use what you prefer! I know Ruby isn't for everyone.
 
-# Tutorial Parts
+## Tutorial Parts
 
 Everything is broken up into a series of steps, which you can find under [tutorial-parts](tutorial-parts).
 
@@ -27,7 +27,7 @@ Everything is broken up into a series of steps, which you can find under [tutori
 3. [Making a full ISO](tutorial-parts/3-iso-kernel.md)
 4. [Checking for 64-bit support](tutorial-parts/4-64-bit-check.md)
 
-# Contributing
+## Contributing
 
 It would be wonderful to see issues/PRs opened for problems you experience with this tutorial. I'd be excited even to just hear you tried it out.
 
