@@ -16,6 +16,8 @@ We're going to be building an ELF executable, but OS X uses Mach-O. Clang is a r
 
     brew install https://raw.githubusercontent.com/Gallopsled/pwntools-binutils/master/osx/binutils-i386.rb
 
+For build automation, my personal preference is [Rake](https://github.com/ruby/rake). It has been pre-installed on OS X for ages, and is far more sane than Make. That said, please use what you prefer! I know Ruby isn't for everyone.
+
 # Tutorial Parts
 
 Everything is broken up into a series of steps, which you can find under [tutorial-parts](tutorial-parts).
@@ -28,3 +30,9 @@ Everything is broken up into a series of steps, which you can find under [tutori
 # Contributing
 
 It would be wonderful to see issues/PRs opened for problems you experience with this tutorial. I'd be excited even to just hear you tried it out.
+
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+## License
+
+The project is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
