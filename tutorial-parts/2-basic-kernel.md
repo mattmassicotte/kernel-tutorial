@@ -47,9 +47,7 @@ To do that, we're going to use the video card's memory-mapped text mode to print
 
 We'll build this code using clang as a cross-compiler, which is easy:
 
-    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/kernel.c -o build/basic-kernel.o
-
-    (rake kernel:basic:compile)
+    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/kernel.c -o build/basic_kernel.o
 
 The one bit that might look unfamiliar is the 'freestanding' flag. It tells the compiler that the programming isn't running in a typical libc-enabled environment. You can read a good explanation about it on [stack overflow](http://stackoverflow.com/questions/17692428/what-is-ffreestanding-option-in-gcc).
 
@@ -65,13 +63,13 @@ This linker script is mostly taken from the [Bare Bones](http://wiki.osdev.org/B
 
 # Actually doing the linking
 
-    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o build/basic-kernel.bin build/multiboot_header.o build/multiboot_entry.o build/basic-kernel.o
+    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o build/kernel.bin build/multiboot_header.o build/multiboot_entry.o build/basic_kernel.o
 
     (rake kernel:basic:build)
 
 This produces a 32-bit ELF executable, and will be loadable by QEMU's multiboot implementation. You can verify you've built the right thing with the 'file' command
 
-    file build/basic-kernel.bin
+    file build/kernel.bin
 
 You should see something about this being an ELF 32-bit executable.
 
@@ -79,7 +77,7 @@ You should see something about this being an ELF 32-bit executable.
 
 Running this with QEMU is a snap.
 
-    qemu-system-i386 -kernel build/basic-kernel.bin
+    qemu-system-i386 -kernel build/kernel.bin
 
 It doesn't do much, but it does confirm that we're actually seeing our own code running on the machine.
 

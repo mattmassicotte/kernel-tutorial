@@ -44,30 +44,30 @@ Ok, back to business. Now, we're going to try to make a bootable ISO. This is re
 
 Next, copy in the two GRUB bootloader stages we need. I found it fairly confusing that this is called a "1.5 " stage. It turns out this is just really bad naming, and stage1 is not required here.
 
-    cp bootloader/grub-0.97-binaries/iso9660_stage1_5 build/isofiles/boot/grub/
-    cp bootloader/grub-0.97-binaries/stage2 build/isofiles/boot/grub/
+    cp bootloader/grub-0.97-binaries/iso9660_stage1_5 build/isofiles/boot/grub/stage1
+    cp bootloader/grub-0.97-binaries/stage2 build/isofiles/boot/grub/stage2
 
 Next, we have to create a bootable ISO. This is a fairly esoteric thing, and was the most complex part of this process by far. We need an ISO9660 filesystem. We need the interestingly-named "Rock Ridge" extensions to support grub's lowercase filenames. And, then we need equally interestinly-named El Torito extension to support bootable CD-ROMs. xorriso can create the image we need, but it is one tough tool to use.
 
 First try: make xorriso emulate a more user-friendly iso-creation tool, like mkisofs. I was able to find a bunch of instructions on how to use mkisofs to create a bootable GRUB image.
 
-    xorriso -as mkisofs -R -b boot/grub/iso9660_stage1_5 -no-emul-boot -boot-load-size 4 -boot-info-table -o build/grub.iso build/isofiles
+    xorriso -as mkisofs -R -b boot/grub/stage1 -no-emul-boot -boot-load-size 4 -boot-info-table -o build/kernel.iso build/isofiles
 
 Second try: use native commands, specifying all of the options required for a successful GRUB boot. This was really annoying to get right, partially because of the weirdness of xorriso's command syntax, and partially because of the weirdness of bootloading in general.
 
-    xorriso -outdev build/grub.iso -blank as_needed -map build/isofiles / -boot_image any bin_path=/boot/grub/iso9660_stage1_5 -boot_image any emul_type=no_emulation -boot_image any boot_info_table=on -boot_image any partition_table=on -boot_image any load_size=2048 -boot_image any cat_path=/boot/boot.cat -boot_image any platform_id=00 -boot_image any id_string=grubiso -boot_image any sel_crit=00
+    xorriso -outdev build/kernel.iso -blank as_needed -map build/isofiles / -boot_image any bin_path=/boot/grub/stage1 -boot_image any emul_type=no_emulation -boot_image any boot_info_table=on -boot_image any partition_table=on -boot_image any load_size=2048 -boot_image any cat_path=/boot/boot.cat -boot_image any platform_id=00 -boot_image any id_string=grubiso -boot_image any sel_crit=00
 
 Third try: allow xorriso to do some of the heavy-lifting, by telling it we are trying to make a GRUB boot image. I guess this is common enough that they've built this into the tool itself. Handy.
 
-    xorriso -outdev build/grub.iso -blank as_needed -map build/isofiles / -boot_image grub bin_path=/boot/grub/iso9660_stage1_5
+    xorriso -outdev build/kernel.iso -blank as_needed -map build/isofiles / -boot_image grub bin_path=/boot/grub/stage1
 
 This one I like best, because it's fairly succinct, but also uses the native xorriso commands. Now, let's give this a whirl.
 
-    qemu-system-x86_64 -boot d -cdrom build/grub.iso
+    qemu-system-x86_64 -boot d -cdrom build/kernel.iso
 
 You can build the ISO with rake as well. Check it:
 
-    rake grub:iso
+    rake grub:basic_iso
 
 # Congrats!
 

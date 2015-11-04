@@ -27,30 +27,31 @@ Once we know that we are allowed to call CPUID, we have to do two checks. First,
 
 Let's build the two assembly files.
 
-    nasm -felf32 32-bit-kernel/i386/cpuid_supported.asm -o cpuid_supported.o
-    nasm -felf32 32-bit-kernel/i386/cpuid.asm -o cpuid.o
+    mkdir build
+    nasm -felf32 32-bit-kernel/i386/cpuid_supported.asm -o build/cpuid_supported.o
+    nasm -felf32 32-bit-kernel/i386/cpuid.asm -o build/cpuid.o
 
 The next step is to build a [tweaked version](32-bit-kernel/cpuid_kernel.c) of our kernel, that will print out the results of our CPUID checks.
 
-    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/cpuid_kernel.c -o kernel.o
+    clang -target i386-linux-gnu -ffreestanding -Wall -Wextra -c 32-bit-kernel/cpuid_kernel.c -o build/kernel.o
 
 Finally, we can build the other pieces, taken from previous tutorial steps.
 
-    nasm -felf32 32-bit-kernel/multiboot_entry.asm -o multiboot_entry.o
-    nasm -felf32 32-bit-kernel/multiboot_header.asm -o multiboot_header.o
+    nasm -felf32 32-bit-kernel/multiboot_entry.asm -o build/multiboot_entry.o
+    nasm -felf32 32-bit-kernel/multiboot_header.asm -o build/multiboot_header.o
 
 And, now let's link it all together.
 
-    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o kernel.bin multiboot_header.o multiboot_entry.o kernel.o cpuid.o cpuid_supported.o
+    i386-unknown-linux-gnu-ld -T 32-bit-kernel/kernel.ld -o build/kernel.bin build/multiboot_header.o build/multiboot_entry.o build/kernel.o build/cpuid.o build/cpuid_supported.o
 
 # Running
 
 We aren't going to bother with building an bootable ISO for this part, though it wouldn't be all that hard. We'll just run our kernel binary directly, to check out the results of our changes.
 
-    qemu-system-i386 -kernel kernel.bin
+    qemu-system-i386 -kernel build/kernel.bin
 
 Hrm, unsupported? As you might have guessed, given the qemu command we've been running, the emulated processor does not support 64 bit. However, this is easy to fix, we just need to use a different command.
 
-    qemu-system-x86_64 -kernel kernel.bin
+    qemu-system-x86_64 -kernel build/kernel.bin
 
 Ah ha! 64-bit support, confirmed by our CGA output!

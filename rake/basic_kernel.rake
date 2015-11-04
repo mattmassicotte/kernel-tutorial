@@ -1,9 +1,8 @@
 BASIC_KERNEL_SOURCE = '32-bit-kernel/kernel.c'
-BASIC_KERNEL_OBJECT = File.join(BUILD_DIR, 'basic-kernel.o')
-BASIC_KERNEL = File.join(BUILD_DIR, 'basic-kernel.bin')
+BASIC_KERNEL_OBJECT = File.join(BUILD_DIR, 'basic_kernel.o')
+BASIC_KERNEL = File.join(BUILD_DIR, 'basic_kernel.bin')
 BASIC_KERNEL_LINKER_SCRIPT = '32-bit-kernel/kernel.ld'
-BASIC_KERNEL_MULTIBOOT_OBJECTS = ['multiboot_header.o', 'multiboot_entry.o'].map { |x| File.join(BUILD_DIR, x) }
-BASIC_KERNEL_OBJECTS = [BASIC_KERNEL_MULTIBOOT_OBJECTS, BASIC_KERNEL_OBJECT].flatten
+BASIC_KERNEL_OBJECTS = [MULTIBOOT_OBJECTS, BASIC_KERNEL_OBJECT].flatten
 
 CLEAN.include(BASIC_KERNEL_OBJECT)
 file BASIC_KERNEL_OBJECT => [BASIC_KERNEL_SOURCE, BUILD_DIR] do |name|
@@ -23,5 +22,14 @@ namespace :kernel do
 
     desc 'Compile and link the basic 32-bit kernel'
     task :build => BASIC_KERNEL
+
+    desc 'Build the basic 32-bit kernel ISO'
+    task :iso => [BASIC_KERNEL, 'grub:iso_directories'] do
+      FileUtils.cp(BASIC_KERNEL, GRUB_KERNEL)
+      FileUtils.cp('bootloader/menu.lst', GRUB_ISO_GRUB_DIR)
+      FileUtils.cp('bootloader/data_file', GRUB_ISO_BOOT_DIR)
+
+      Rake::Task['grub:iso'].invoke
+    end
   end
 end
