@@ -22,9 +22,9 @@ I found it very challenging to experiment with a kernel and a bootloader at the 
 
 # Becoming Multiboot-aware
 
-Multiboot works by searching through a binary file for a magic number along with some data. When found, this data tells the loader that this is in fact a kernel, how to load it, and what info it wants. We're going to construct this [header](bootloader/multiboot_header.asm) in assembly. This file contains some defines to improve readability, as well as a bunch of comments to help explain what's going on. It is not critical you understand everything in this file.
+Multiboot works by searching through a binary file for a magic number along with some data. When found, this data tells the loader that this is in fact a kernel, how to load it, and what info it wants. We're going to construct this [header](../bootloader/multiboot_header.asm) in assembly. This file contains some defines to improve readability, as well as a bunch of comments to help explain what's going on. It is not critical you understand everything in this file.
 
-The second part of our multiboot support is the initial [entry point](bootloader/multiboot_entry.asm) for our kernel, also in assembly. This file contains the code that the bootloader will actually call. It also contains a simple "hang" function, to halt the CPU if something goes wrong, or if our kernel entry point returns. Notably, this file also sets up a stack so we can begin executing C code. Remember, we're at a pretty low level here, so even that isn't done for us automatically.
+The second part of our multiboot support is the initial [entry point](../bootloader/multiboot_entry.asm) for our kernel, also in assembly. This file contains the code that the bootloader will actually call. It also contains a simple "hang" function, to halt the CPU if something goes wrong, or if our kernel entry point returns. Notably, this file also sets up a stack so we can begin executing C code. Remember, we're at a pretty low level here, so even that isn't done for us automatically.
 
 # Building our assembly
 
