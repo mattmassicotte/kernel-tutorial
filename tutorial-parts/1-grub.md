@@ -34,7 +34,7 @@ I've automated these steps using rake. To build the floppy image quickly, do thi
 
 # Quick aside about QEMU's monitor
 
-QEMU has a monitor interface that gives you a ton of tools for control and introspection of the running machine. I like to run QEMU with "-curses", to keep everything in the terminal. With that option, you can use ESC + 2 to access the monitor. You need to do this, at a minimum, quit the process. This monitor, however, has some funky behavior. It is expecting to find the TERM environment variable set to "xterm-color", but OS X's Terminal has a default of "xterm-256color". This causes the monitor to output black text. If you have a black terminal background, as I do, this is suboptimal. One possible solution is to always set TERM to be "xterm-color". Another interesting option is to run QEMU with a monitor server, using "-monitor telnet:127.0.0.1:1234,server,nowait". Or you could just run it with the QUI, that's fine too.
+QEMU has a monitor interface that gives you a ton of tools for control and introspection of the running machine. I like to run QEMU with "-curses", to keep everything in the terminal. With that option, you can use ESC + 2 to access the monitor. You need to do this, at a minimum, to quit the process. This monitor, however, has some funky behavior. It is expecting to find the TERM environment variable set to "xterm-color", but OS X's Terminal has a default of "xterm-256color". This causes the monitor to output black text. If you have a black terminal background, as I do, this is suboptimal. One possible solution is to always set TERM to be "xterm-color". Another interesting option is to run QEMU with a monitor server, using "-monitor telnet:127.0.0.1:1234,server,nowait". Or you could just run it with the UI, that's fine too.
 
 # Making a bootable ISO image
 
@@ -42,12 +42,12 @@ Ok, back to business. Now, we're going to try to make a bootable ISO. This is re
 
     mkdir -p build/isofiles/boot/grub
 
-Next, copy in the two GRUB bootloader stages we need. I found it fairly confusing that this is called a "1.5 " stage. It turns out this is just really bad naming, and stage1 is not required here.
+Next, copy in the two GRUB bootloader stages we need. I found it fairly confusing that this is called a "1.5" stage. It turns out this is just really bad naming, and stage1 is not required here.
 
     cp bootloader/grub-0.97-binaries/iso9660_stage1_5 build/isofiles/boot/grub/stage1
     cp bootloader/grub-0.97-binaries/stage2 build/isofiles/boot/grub/stage2
 
-Next, we have to create a bootable ISO. This is a fairly esoteric thing, and was the most complex part of this process by far. We need an ISO9660 filesystem. We need the interestingly-named "Rock Ridge" extensions to support grub's lowercase filenames. And, then we need equally interestinly-named El Torito extension to support bootable CD-ROMs. xorriso can create the image we need, but it is one tough tool to use.
+Next, we have to create a bootable ISO. This is a fairly esoteric thing, and was the most complex part of this process by far. We need an ISO9660 filesystem. We need the interestingly-named "Rock Ridge" extensions to support grub's lowercase filenames. And, then we need equally interestingly-named "El Torito" extension to support bootable CD-ROMs. xorriso can create the image we need, but it is one tough tool to use.
 
 First try: make xorriso emulate a more user-friendly iso-creation tool, like mkisofs. I was able to find a bunch of instructions on how to use mkisofs to create a bootable GRUB image.
 

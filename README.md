@@ -1,12 +1,12 @@
 # Kernel Tutorial
 
-I really enjoy learning about and understanding lower-level computer systems. While [OSDEV wiki](http://wiki.osdev.org/Main_Page) is a fantastic resource, I've really struggled with many of their tutorials. So, I thought it would be nice to take things that I've gotten working at put them into a git-based tutorial.
+I really enjoy learning about and understanding lower-level computer systems. While [OSDEV wiki](http://wiki.osdev.org/Main_Page) is a fantastic resource, I've really struggled with many of their tutorials. So, I thought it would be nice to take things that I've gotten working and put them into a git-based tutorial. This makes it much easier to follow along, and correct mistakes.
 
 This series isn't even close to as thorough as what you'll find over at OSDev. There is tons of theory and lots of details that aren't covered. Typically, I've found those bits to the easiest to learn on your own. This is geared towards getting something working, with OS X as your development environment. If you're a linux user, I think you'll be able to adapt most of these instructions to your system fairly easily.
 
 ## Tooling
 
-While each tutorial part will include installation steps, here's a list of everything needed for all steps in one place. First and foremost, install Xcode to get it's suite of command line tools.
+While each tutorial part will include installation steps, here's a list of everything needed for all steps in one place. First and foremost, install Xcode to get its suite of command line tools.
 
     brew install qemu
     brew install xorriso
@@ -31,7 +31,7 @@ Everything is broken up into a series of steps, which you can find under [tutori
 
 It would be wonderful to see issues/PRs opened for problems you experience with this tutorial. I'd be excited even to just hear you tried it out.
 
-This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) [code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
