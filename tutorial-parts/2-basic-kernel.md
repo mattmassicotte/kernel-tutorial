@@ -35,13 +35,13 @@ The second part of our multiboot support is the initial [entry point](../bootloa
 
 Or, via rake:
 
-  rake multiboot:compile
+    rake multiboot:compile
 
 With these pieces, we have enough to be multiboot-aware, and to setup an environment suitable for running C code.
 
 # PoC Kernel in C
 
-So far, every step we've done changes internal machine state in a completely silent way. The last piece we need is a [C program](kernel.c) that will provide a little feedback to prove that we're actually executing some code.
+So far, every step we've done changes internal machine state in a completely silent way. The last piece we need is a [C program](../32-bit-kernel/kernel.c) that will provide a little feedback to prove that we're actually executing some code.
 
 To do that, we're going to use the video card's memory-mapped text mode to print a few characters to the screen. The details here aren't super-important for now. But, if you want more info, you can check it out on the [OSDEV wiki](http://wiki.osdev.org/Text_UI).
 
@@ -53,7 +53,7 @@ The one bit that might look unfamiliar is the 'freestanding' flag. It tells the 
 
 # A note about linking
 
-Something I found quite foreign when working on this was the need for a [linker script](kernel.ld). Normally, linker behavior is defined via a default setup, and you never need to mess around with it. In this case, we need to exert more control over the final binary the linker produces. There are two things we need to do that the defaults don't make possible. First, we have to position that multiboot header close to the beginning. A multiboot loader will only scan so far into the binary before it will give up. Second, we need to ask the linker to position the executable at 1M.
+Something I found quite foreign when working on this was the need for a [linker script](kernel.ld). Normally, linker behavior is defined via a default setup, and you never need to mess around with it. In this case, we need to exert more control over the final binary the linker produces. There are two things we need to do that the defaults don't make possible. First, we have to position that multiboot header close to the beginning. A multiboot loader will only scan so far into the binary before it will give up. Second, we need to ask the linker to position the executable at an exact address, 1M.
 
 Normally, the memory positions used by the linker are virtual addresses. In this case, the bootloader is going to be putting this executable in physical addresses because paging isn't enabled. This is problematic, because lots of hardware features are memory-mapped and we shouldn't (or can't) overwrite them. Starting at 1M is a safe place to load.
 
