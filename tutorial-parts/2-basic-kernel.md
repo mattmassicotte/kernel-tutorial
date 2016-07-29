@@ -6,7 +6,7 @@ The idea for this tutorial came from me having a fair amount of trouble followin
 
 OS X is assumed throughout.
 
-Grab qemu and the nasm assembler:
+Grab qemu, the nasm assembler, and ELF binutils:
 
     brew install qemu
     brew install nasm
@@ -14,7 +14,7 @@ Grab qemu and the nasm assembler:
 
 # Quick Multiboot Primer
 
-Booting a computer system and loading an OS is actually incredibly complicated. So, some fine folks decided to try to make a standard so the bootloader system could be truly separate the OS itself. The standard they developed is called [Multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html). GRUB is a very popular multiboot-compliant bootloader.
+Booting a computer system and loading an OS is actually incredibly complicated. So, some fine folks decided to try to make a standard so the bootloader system could be truly separate from the OS itself. The standard they developed is called [Multiboot](https://www.gnu.org/software/grub/manual/multiboot/multiboot.html). GRUB is a very popular multiboot-compliant bootloader.
 
 Multiboot provides a standard way for the bootloader to find and load the kernel, as well as relay some critical machine details over. This tutorial is going to be about creating a multiboot-aware kernel and getting it running in QEMU.
 
@@ -22,9 +22,9 @@ I found it very challenging to experiment with a kernel and a bootloader at the 
 
 # Becoming Multiboot-aware
 
-Multiboot works by searching through a binary file for a magic number along with some data. When found, this data tells the loader that this is in fact a kernel, how to load it, and what info it wants. We're going to construct this [header](multiboot_header.asm) in assembly. This file contains some defines to improve readability, as well as a bunch of comments to help explain what's going on. It is not critical you understand everything in this file.
+Multiboot works by searching through a binary file for a magic number along with some data. When found, this data tells the loader that this is in fact a kernel, how to load it, and what info it wants. We're going to construct this [header](bootloader/multiboot_header.asm) in assembly. This file contains some defines to improve readability, as well as a bunch of comments to help explain what's going on. It is not critical you understand everything in this file.
 
-The second part of our multiboot support is the initial [entry point](multiboot_entry.asm) for our kernel, also in assembly. This file contains the code that the bootloader will actually call. It also contains a simple "hang" function, to halt the CPU if something goes wrong, or if our kernel entry point returns. Notably, this file also sets up a stack so we can begin executing C code. Remember, we're at a pretty low level here, so even that isn't done for us automatically.
+The second part of our multiboot support is the initial [entry point](bootloader/multiboot_entry.asm) for our kernel, also in assembly. This file contains the code that the bootloader will actually call. It also contains a simple "hang" function, to halt the CPU if something goes wrong, or if our kernel entry point returns. Notably, this file also sets up a stack so we can begin executing C code. Remember, we're at a pretty low level here, so even that isn't done for us automatically.
 
 # Building our assembly
 
