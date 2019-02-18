@@ -2,7 +2,7 @@
 
 I really enjoy learning about and understanding lower-level computer systems. While [OSDEV wiki](http://wiki.osdev.org/Main_Page) is a fantastic resource, I've really struggled with many of their tutorials. So, I thought it would be nice to take things that I've gotten working and put them into a git-based tutorial. This makes it much easier to follow along, and correct mistakes.
 
-This series isn't even close to as thorough as what you'll find over at OSDev. There is tons of theory and lots of details that aren't covered. Typically, I've found those bits to the easiest to learn on your own. This is geared towards getting something working, with OS X as your development environment. If you're a linux user, I think you'll be able to adapt most of these instructions to your system fairly easily.
+This series isn't even close to as thorough as what you'll find over at OSDev. There is tons of theory and lots of details that aren't covered. Typically, I've found those bits to the easiest to learn on your own. This is geared towards getting something working, with macOS as your development environment. If you're a linux user, I think you'll be able to adapt most of these instructions to your system fairly easily.
 
 ## Tooling
 
@@ -11,12 +11,12 @@ While each tutorial part will include installation steps, here's a list of every
     brew install qemu
     brew install xorriso
     brew install nasm
-
-We're going to be building an ELF executable, but OS X uses Mach-O. Clang is a really great cross-compiler, but we also need a cross-linker, which OS X does not include by default. At one point, I was able to install the gcc ELF bintuils directly from homebrew, but lately I've been unable to find a default that works. I'd love some pointers here. I used this:
+macOS
+We're going to be building an ELF executable, but macOS uses Mach-O. Clang is a really great cross-compiler, but we also need a cross-linker, which macOS does not include by default. At one point, I was able to install the gcc ELF bintuils directly from homebrew, but lately I've been unable to find a default that works. I'd love some pointers here. I used this:
 
     brew install https://raw.githubusercontent.com/Gallopsled/pwntools-binutils/master/osx/binutils-i386.rb
 
-For build automation, my personal preference is [Rake](https://github.com/ruby/rake). It has been pre-installed on OS X for ages, and is far more sane than Make. That said, please use what you prefer! I know Ruby isn't for everyone.
+For build automation, my personal preference is [Rake](https://github.com/ruby/rake). It has been pre-installed on macOS for ages, and is far more user-friendly than Make. That said, please use what you prefer! I know Ruby isn't for everyone.
 
 ## Tutorial Parts
 

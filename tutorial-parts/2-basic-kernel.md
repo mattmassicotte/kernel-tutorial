@@ -4,7 +4,7 @@ The idea for this tutorial came from me having a fair amount of trouble followin
 
 # Tooling
 
-OS X is assumed throughout.
+macOS is assumed throughout.
 
 Grab qemu, the nasm assembler, and ELF binutils:
 

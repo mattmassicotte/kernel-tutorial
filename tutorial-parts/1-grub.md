@@ -2,7 +2,7 @@
 
 I found it fairly frustrating to find my way around the [OSDEV wiki](http://wiki.osdev.org/Main_Page). So, I decided to take the things I've learned and turn them into a git-based tutorial. This is the first bit, getting some basic tooling installed, and booting a machine. This uses GRUB legacy, which is not the most recent build, nor does it support EFI - BIOS only.
 
-This all assumes you are running on OS X. If you are using Linux, I imagine you'll not have a hard time adapting this to your system.
+This all assumes you are running on macOS. If you are using Linux, I imagine you'll not have a hard time adapting this to your system.
 
 # Tooling
 
@@ -34,7 +34,7 @@ I've automated these steps using rake. To build the floppy image quickly, do thi
 
 # Quick aside about QEMU's monitor
 
-QEMU has a monitor interface that gives you a ton of tools for control and introspection of the running machine. I like to run QEMU with "-curses", to keep everything in the terminal. With that option, you can use ESC + 2 to access the monitor. You need to do this, at a minimum, to quit the process. This monitor, however, has some funky behavior. It is expecting to find the TERM environment variable set to "xterm-color", but OS X's Terminal has a default of "xterm-256color". This causes the monitor to output black text. If you have a black terminal background, as I do, this is suboptimal. One possible solution is to always set TERM to be "xterm-color". Another interesting option is to run QEMU with a monitor server, using "-monitor telnet:127.0.0.1:1234,server,nowait". Or you could just run it with the UI, that's fine too.
+QEMU has a monitor interface that gives you a ton of tools for control and introspection of the running machine. I like to run QEMU with "-curses", to keep everything in the terminal. With that option, you can use ESC + 2 to access the monitor. You need to do this, at a minimum, to quit the process. This monitor, however, has some funky behavior. It is expecting to find the TERM environment variable set to "xterm-color", but macOS's Terminal has a default of "xterm-256color". This causes the monitor to output black text. If you have a black terminal background, as I do, this is suboptimal. One possible solution is to always set TERM to be "xterm-color". Another interesting option is to run QEMU with a monitor server, using "-monitor telnet:127.0.0.1:1234,server,nowait". Or you could just run it with the UI, that's fine too.
 
 # Making a bootable ISO image
 
