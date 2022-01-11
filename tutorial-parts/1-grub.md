@@ -13,7 +13,7 @@ We'll need two bits of software installed to proceed. I got them installed using
 
 # Making a basic GRUB floppy bootloader
 
-This is interesting just to test out QEMU and GRUB. This can be handy for using the GRUB cli to check out machine details. It's also nice just to verify that you have a working QEMU setup. I had a really tough time building GRUB from source, and I struggled to find binaries. They actually are available via [ftp](tp://alpha.gnu.org/gnu/grub/), but I've included them here, so you can follow along without needed to leave the terminal.
+This is interesting just to test out QEMU and GRUB. This can be handy for using the GRUB cli to check out machine details. It's also nice just to verify that you have a working QEMU setup. I had a really tough time building GRUB from source, and I struggled to find binaries. They actually are available via [ftp](https://alpha.gnu.org/gnu/grub/), but I've included them here, so you can follow along without needed to leave the terminal.
 
 Here's how you build a basic bootable floppy. Note that we need to make sure to set the block size (bs) to 512 bytes. For stage one, we're telling DD to copy only 1 block worth of data. In this case, stage1 is exactly 512 bytes. I believe this is a requirement of the BIOS floppy boot system. stage2 is positioned immediately after (seek'ing 1 block in).
 
