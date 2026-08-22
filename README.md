@@ -1,8 +1,12 @@
 # Kernel Tutorial
 
+> Originally authored by [Matt Massicotte](https://www.massicotte.org/). Maintained by [Dmitrii Kharlamov](https://dakharlamov.com) as of August 2026. Please consider [sponsoring the original author of this work - Matt Massicotte](https://github.com/sponsors/mattmassicotte).
+
 I really enjoy learning about and understanding lower-level computer systems. While [OSDEV wiki](http://wiki.osdev.org/Main_Page) is a fantastic resource, I've really struggled with many of their tutorials. So, I thought it would be nice to take things that I've gotten working and put them into a git-based tutorial. This makes it much easier to follow along, and correct mistakes.
 
 This series isn't even close to as thorough as what you'll find over at OSDev. There is tons of theory and lots of details that aren't covered. Typically, I've found those bits to the easiest to learn on your own. This is geared towards getting something working, with macOS as your development environment. If you're a linux user, I think you'll be able to adapt most of these instructions to your system fairly easily.
+
+~ Matt
 
 ## Tooling
 
