@@ -1,6 +1,6 @@
 # Kernel Tutorial
 
-> Originally authored by [Matt Massicotte](https://www.massicotte.org/). Maintained by [Dmitrii Kharlamov](https://dakharlamov.com) as of August 2026. Please consider [sponsoring the original author of this work - Matt Massicotte](https://github.com/sponsors/mattmassicotte).
+> Originally created by @mattmassicotte. Now maintained by @dimasusername.
 
 I really enjoy learning about and understanding lower-level computer systems. While [OSDEV wiki](http://wiki.osdev.org/Main_Page) is a fantastic resource, I've really struggled with many of their tutorials. So, I thought it would be nice to take things that I've gotten working and put them into a git-based tutorial. This makes it much easier to follow along, and correct mistakes.
 
